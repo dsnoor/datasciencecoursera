@@ -15,13 +15,25 @@ pollutantmean <- function(directory, pollutant, id = 1:332)
         ## in the 'id' vector (ignoring NA values)
         
         pollutantDataset <- data.frame()
+        
+        ## Reading each file using for loop and append the data to pollutantDataset 
+        ## for final calculation
         for(file in rep(id))
         {
-                ## directory 
-                pollutantCurrentData <-  read.table(paste(directory,"/",sprintf("%03d",file),".csv",sep=""), header = TRUE, sep = ",") 
+                ## concatenate directory with filename
+                filepath <-  paste(directory,"/",sprintf("%03d",file),".csv", sep ="")
+                
+                ## read content from current file
+                pollutantCurrentData <-  read.table(filepath, header = TRUE, sep = ",") 
+                
+                ## Append each current dataset to the final pollutatnDataset
                 pollutantDataset <- rbind(pollutantDataset, pollutantCurrentData)
                 
         }
-        ##pollutantDataset
+        ## The below line of code is to just to check on final dataset content for debugging purpose
+        ## pollutantDataset      
+        
+        
+        ## calculating mean for requested pollutant while removing NA values
         mean(pollutantDataset[,pollutant],na.rm=TRUE)
 }
